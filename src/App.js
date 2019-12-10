@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as TodoActions from "./store/ducks/todos";
 
-function App() {
+function App({ state, addTodo, ...props }) {
+  const { todos } = state;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Hello, world!</h1>
+      <div>
+        <ul>
+          {todos.map((todo, key) => (
+            <li key={key}>{todo.text}</li>
+          ))}
+        </ul>
+      </div>
+      <button onClick={() => addTodo("teste")}>Add todo</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  state: state.todos
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(TodoActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
